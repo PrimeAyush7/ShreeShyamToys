@@ -1,0 +1,240 @@
+/* ==========================================================
+   SHREE SHYAM TOYS — RESPONSIVE DESIGN SPECIFICATION
+   Tested Viewports: 320px, 360px, 375px, 390px, 414px, 768px, 1024px, 1440px+
+   Strict Rule: Zero Horizontal Overflow, Genuine Mobile UX
+   ========================================================== */
+
+/* Mobile Hamburger & Mobile Navigation */
+.hamburger-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: var(--text-main);
+}
+.mobile-nav-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(36, 20, 13, 0.6);
+  z-index: 1050;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+.mobile-nav-backdrop.open {
+  opacity: 1;
+  visibility: visible;
+}
+.mobile-nav-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 82%;
+  max-width: 320px;
+  background: #FFFFFF;
+  z-index: 1051;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 8px 0 24px rgba(0,0,0,0.15);
+}
+.mobile-nav-backdrop.open .mobile-nav-drawer {
+  transform: translateX(0);
+}
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+  list-style: none;
+}
+.mobile-nav-links a {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Tablet & Mobile Breakpoints */
+@media (max-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 32px;
+  }
+  .hero-subtitle {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-ctas {
+    justify-content: center;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-desktop {
+    display: none;
+  }
+  .hamburger-btn {
+    display: block;
+  }
+  .header-inner {
+    height: 64px;
+  }
+  .site-logo {
+    height: 38px;
+  }
+  
+  .hero-title {
+    font-size: 28px;
+    letter-spacing: -0.4px;
+  }
+  .hero-subtitle {
+    font-size: 15px;
+  }
+  .section {
+    padding: 44px 0;
+  }
+  .section-title {
+    font-size: 24px;
+  }
+
+  /* Product grid on tablet/mobile */
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  .product-card-body {
+    padding: 12px;
+  }
+  .product-card-title {
+    font-size: 14px;
+  }
+  .product-card-meta {
+    padding: 6px 8px;
+    font-size: 11px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .product-card-pricing-cta {
+    font-size: 11.5px;
+  }
+
+  /* Category grid */
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .category-card {
+    padding: 10px;
+  }
+  .category-card-title {
+    font-size: 13px;
+  }
+
+  /* Catalogue Layout & Mobile Filters */
+  .catalogue-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .filters-sidebar {
+    display: none; /* Hidden by default on mobile, opened via filter drawer button */
+  }
+  .mobile-filter-bar {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  /* Drawer on Mobile */
+  .enquiry-drawer {
+    max-width: 100%;
+  }
+
+  /* Footer on Mobile */
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+}
+
+/* Small Mobiles: 320px - 380px */
+@media (max-width: 380px) {
+  .container {
+    padding: 0 12px;
+  }
+  .site-logo {
+    height: 32px;
+  }
+  .product-grid {
+    grid-template-columns: 1fr; /* Single column on ultra-narrow 320px to prevent cramped cards */
+    gap: 16px;
+  }
+  .hero-title {
+    font-size: 24px;
+  }
+  .hero-ctas .btn {
+    width: 100%;
+  }
+  .category-grid {
+    grid-template-columns: 1fr;
+  }
+  .enquiry-badge-btn {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+}
+
+/* Product Detail Responsive */
+.product-detail-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .product-detail-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
+
+/* Desktop Catalogue Layout */
+.catalogue-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+.filters-sidebar {
+  background: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  position: sticky;
+  top: 94px;
+}
+.mobile-filter-bar {
+  display: none;
+}
