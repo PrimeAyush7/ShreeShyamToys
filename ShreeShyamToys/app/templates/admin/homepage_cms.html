@@ -1,0 +1,69 @@
+{% extends "admin/base_admin.html" %}
+
+{% block page_title %}Homepage Content Sections (CMS){% endblock %}
+
+{% block admin_content %}
+{% if success %}
+<div style="background: #D1FAE5; border: 1px solid #6EE7B7; color: #065F46; border-radius: 8px; padding: 12px; margin-bottom: 20px; font-weight: 600; font-size: 14px;">
+  {{ success }}
+</div>
+{% endif %}
+
+<div style="display: flex; flex-direction: column; gap: 24px; max-width: 900px;">
+  {% for sec_key, sec in sections.items() %}
+  <div class="admin-card">
+    <h3 style="font-size: 16px; font-weight: 800; color: #111827; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">
+      Section: {{ sec_key|replace('_', ' ') }}
+    </h3>
+
+    <form action="/admin/homepage/{{ sec_key }}" method="POST">
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label class="form-label">Section Heading / Title</label>
+          <input type="text" name="title" class="form-control" value="{{ sec.title or '' }}">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subheading / Badge</label>
+          <input type="text" name="subtitle" class="form-control" value="{{ sec.subtitle or '' }}">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Body Content / Description</label>
+        <textarea name="content" class="form-control" rows="3">{{ sec.content or '' }}</textarea>
+      </div>
+
+      <div class="form-grid-3">
+        <div class="form-group">
+          <label class="form-label">CTA Button Label</label>
+          <input type="text" name="cta_label" class="form-control" value="{{ sec.cta_label or '' }}">
+        </div>
+        <div class="form-group">
+          <label class="form-label">CTA Button URL</label>
+          <input type="text" name="cta_url" class="form-control" value="{{ sec.cta_url or '' }}">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Featured Image / SVG URL</label>
+          <input type="text" name="image_url" class="form-control" value="{{ sec.image_url or '' }}">
+        </div>
+      </div>
+
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label class="form-label">Display Order</label>
+          <input type="number" name="display_order" class="form-control" value="{{ sec.display_order or 0 }}">
+        </div>
+        <div class="form-group" style="display: flex; align-items: center; margin-top: 24px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-weight: 700; cursor: pointer;">
+            <input type="checkbox" name="is_enabled" value="true" {% if sec.is_enabled %}checked{% endif %}>
+            Section is Active on Homepage
+          </label>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-outline btn-sm">Update {{ sec_key|replace('_', ' ') }}</button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

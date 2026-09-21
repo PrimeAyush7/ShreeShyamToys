@@ -1,0 +1,410 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.seo_title or product.name + " Wholesale B2B | Shree Shyam Toys" }}{% endblock %}
+{% block meta_description %}{{ product.seo_description or product.description }}{% endblock %}
+
+{% block extra_css %}
+<style>
+  .gallery-container {
+    position: relative;
+    background: #FFFFFF;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    padding: 16px;
+    box-shadow: var(--shadow-sm);
+  }
+  .gallery-main-view {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background-color: var(--bg-page);
+    cursor: zoom-in;
+  }
+  .gallery-main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.2s ease-out;
+  }
+  .gallery-thumbs-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 14px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .gallery-thumb {
+    width: 70px;
+    height: 70px;
+    border-radius: var(--radius-md);
+    border: 2px solid var(--border-light);
+    object-fit: cover;
+    cursor: pointer;
+    background: #FFFFFF;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+  }
+  .gallery-thumb.active, .gallery-thumb:hover {
+    border-color: var(--primary);
+    transform: scale(1.05);
+  }
+  .spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin-top: 16px;
+  }
+  .spec-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .spec-table td:first-child {
+    font-weight: 700;
+    color: var(--text-muted);
+    width: 35%;
+    background-color: var(--bg-page);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 32px; padding-bottom: 64px;">
+
+  <!-- Breadcrumbs -->
+  <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px;">
+    <a href="/" style="color: var(--text-muted);">Home</a> &nbsp;/&nbsp; 
+    <a href="/catalogue" style="color: var(--text-muted);">Catalogue</a> &nbsp;/&nbsp; 
+    {% if product.category_slug %}
+      <a href="/category/{{ product.category_slug }}" style="color: var(--text-muted);">{{ product.category_name }}</a> &nbsp;/&nbsp; 
+    {% endif %}
+    <span style="color: var(--primary); font-weight: 700;">{{ product.name }}</span>
+  </div>
+
+  <div class="product-detail-grid">
+    <!-- Left: Gallery -->
+    <div>
+      <div class="gallery-container">
+        <div class="gallery-main-view" id="galleryMainContainer">
+          <img src="{{ product.primary_image_url }}" alt="{{ product.name }}" class="gallery-main-img" id="galleryMainImage">
+        </div>
+        
+        {% if product.images and product.images|length > 1 %}
+        <div class="gallery-thumbs-row">
+          {% for img in product.images %}
+          <img src="{{ img.image_url }}" alt="{{ img.alt_text or product.name }}" class="gallery-thumb {% if loop.first %}active{% endif %}" data-img-src="{{ img.image_url }}">
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+      <div style="font-size: 12px; color: var(--text-light); text-align: center; margin-top: 8px;">
+        &bull; Hover or touch to view enlarged image &bull;
+      </div>
+    </div>
+
+    <!-- Right: Product Information & Variant Selector -->
+    <div>
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+        <span class="badge badge-moq">Wholesale MOQ: {{ product.moq }} pcs</span>
+        {% if product.availability == 'in_stock' %}
+          <span class="badge" style="background-color: #D1FAE5; color: #065F46;">In Stock</span>
+        {% elif product.availability == 'coming_soon' %}
+          <span class="badge" style="background-color: #FEF3C7; color: #92400E;">Coming Soon</span>
+        {% else %}
+          <span class="badge" style="background-color: #FEE2E2; color: #991B1B;">Out of Stock</span>
+        {% endif %}
+      </div>
+
+      <h1 style="font-size: 32px; font-weight: 800; color: #24140D; line-height: 1.25; margin-bottom: 6px;">{{ product.name }}</h1>
+      <div style="font-family: monospace; font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">
+        SKU: <span id="currentSkuDisplay">{{ product.sku }}</span>
+      </div>
+
+      <!-- Price policy compliance: No Price Displayed -->
+      <div style="background-color: var(--primary-light); border: 1px solid #E6CCB2; border-radius: var(--radius-md); padding: 14px 18px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px;">
+        <div style="width: 32px; height: 32px; background: var(--primary); color: #FFF; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px;">
+          &#128176;
+        </div>
+        <div>
+          <div style="font-weight: 800; color: var(--primary); font-size: 15px;">Enquire for Wholesale Details &amp; Volume Pricing</div>
+          <div style="font-size: 12.5px; color: #7F4F24;">Volume-based wholesale quotations provided via structured enquiry based on quantity.</div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <p style="font-size: 15px; color: var(--text-muted); line-height: 1.6; margin-bottom: 24px;">
+        {{ product.description }}
+      </p>
+
+      <!-- Variants Selection Form -->
+      <div style="background: #FFFFFF; border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 28px; box-shadow: var(--shadow-sm);">
+        <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin-bottom: 16px;">Configure Order Variant</h4>
+        
+        <!-- Variant Picker if variants exist -->
+        {% if product.variants %}
+        <div style="margin-bottom: 18px;">
+          <label style="display: block; font-size: 12.5px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px;">Available Variant (Size / Colour)</label>
+          <select id="variantSelect" class="form-control" onchange="onVariantChange()">
+            {% for v in product.variants %}
+            <option value="{{ v.id }}" data-size="{{ v.size }}" data-colour="{{ v.colour }}" data-moq="{{ v.variant_moq or product.moq }}" data-suffix="{{ v.sku_suffix or '' }}">
+              {{ v.size }} &mdash; {{ v.colour }} (MOQ: {{ v.variant_moq or product.moq }} pcs)
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        {% endif %}
+
+        <!-- Quantity Stepper with MOQ enforcement -->
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-size: 12.5px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px;">
+            Order Quantity <span id="moqNoticeText" style="color: var(--primary);">(Minimum: {{ product.moq }} pcs)</span>
+          </label>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <button type="button" class="btn btn-outline btn-sm" onclick="adjustProductQty(-5)" style="width: 36px; height: 36px; font-size: 16px; font-weight: bold;">-</button>
+            <input type="number" id="productQuantityInput" class="form-control" value="{{ product.moq }}" min="{{ product.moq }}" style="width: 90px; text-align: center; font-size: 16px; font-weight: 800;">
+            <button type="button" class="btn btn-outline btn-sm" onclick="adjustProductQty(5)" style="width: 36px; height: 36px; font-size: 16px; font-weight: bold;">+</button>
+            <span style="font-size: 14px; font-weight: 600; color: var(--text-muted);">Pieces</span>
+          </div>
+        </div>
+
+        <!-- Action CTAs -->
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <button type="button" class="btn btn-primary btn-lg" onclick="handleAddSelectedProduct()" style="width: 100%;">
+            + Add to Wholesale Enquiry
+          </button>
+          {% if settings.whatsapp_number %}
+          <button type="button" class="btn btn-whatsapp" onclick="handleDirectWhatsAppEnquiry()" style="width: 100%;">
+            Direct WhatsApp Enquiry &rarr;
+          </button>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Product Specifications Table (Populated dynamically from database) -->
+      <h3 style="font-size: 18px; font-weight: 800; color: var(--text-main); margin-bottom: 8px;">Product Specifications</h3>
+      <table class="spec-table">
+        <tbody>
+          <tr>
+            <td>Product Code / SKU</td>
+            <td>{{ product.sku }}</td>
+          </tr>
+          <tr>
+            <td>Category</td>
+            <td>{{ product.category_name }}</td>
+          </tr>
+          <tr>
+            <td>Minimum Order Quantity (MOQ)</td>
+            <td><strong>{{ product.moq }} pieces</strong></td>
+          </tr>
+          {% if product.material %}
+          <tr>
+            <td>Material / Composition</td>
+            <td>{{ product.material }}</td>
+          </tr>
+          {% endif %}
+          {% if product.size_info %}
+          <tr>
+            <td>Available Dimensions / Sizes</td>
+            <td>{{ product.size_info }}</td>
+          </tr>
+          {% endif %}
+          {% if product.available_colours %}
+          <tr>
+            <td>Color Variations</td>
+            <td>{{ product.available_colours }}</td>
+          </tr>
+          {% endif %}
+          {% if product.weight %}
+          <tr>
+            <td>Estimated Weight</td>
+            <td>{{ product.weight }}</td>
+          </tr>
+          {% endif %}
+          {% if product.dimensions %}
+          <tr>
+            <td>Dimensions</td>
+            <td>{{ product.dimensions }}</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <!-- Related Products -->
+  {% if related_products %}
+  <div style="margin-top: 64px; border-top: 1px solid var(--border-light); padding-top: 48px;">
+    <h3 style="font-size: 24px; font-weight: 800; color: var(--text-main); margin-bottom: 24px;">More from {{ product.category_name }}</h3>
+    <div class="product-grid">
+      {% for rp in related_products %}
+      <div class="product-card">
+        <div class="product-card-media">
+          <a href="/product/{{ rp.slug }}">
+            <img src="{{ rp.primary_image_url or '/static/images/placeholder.svg' }}" alt="{{ rp.name }}" class="product-card-img" loading="lazy">
+          </a>
+          <div class="product-badge-bar">
+            <span class="badge badge-moq">MOQ: {{ rp.moq }} pcs</span>
+          </div>
+        </div>
+        <div class="product-card-body">
+          <a href="/product/{{ rp.slug }}">
+            <h4 class="product-card-title">{{ rp.name }}</h4>
+          </a>
+          <div class="product-card-sku">SKU: {{ rp.sku }}</div>
+          <div class="product-card-pricing-cta">Enquire for Wholesale Details</div>
+          <div class="product-card-actions">
+            <a href="/product/{{ rp.slug }}" class="btn btn-primary btn-sm">View Product</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+
+<!-- Structured Schema.org JSON-LD for SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ (settings.app_url or 'https://shreeshyamtoys.onrender.com').rstrip('/') }}/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Catalogue",
+      "item": "{{ (settings.app_url or 'https://shreeshyamtoys.onrender.com').rstrip('/') }}/catalogue"
+    }
+    {% if product.category_slug %}
+    ,{
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ product.category_name }}",
+      "item": "{{ (settings.app_url or 'https://shreeshyamtoys.onrender.com').rstrip('/') }}/category/{{ product.category_slug }}"
+    }
+    {% endif %}
+    ,{
+      "@type": "ListItem",
+      "position": 4,
+      "name": "{{ product.name }}",
+      "item": "{{ (settings.app_url or 'https://shreeshyamtoys.onrender.com').rstrip('/') }}/product/{{ product.slug }}"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "{{ product.name }}",
+  "image": [
+    "{{ product.primary_image_url if product.primary_image_url.startswith('http') else ((settings.app_url or 'https://shreeshyamtoys.onrender.com').rstrip('/') + product.primary_image_url) }}"
+  ],
+  "description": "{{ product.description }}",
+  "sku": "{{ product.sku }}",
+  "brand": {
+    "@type": "Brand",
+    "name": "{{ settings.business_name or 'Shree Shyam Toys' }}"
+  },
+  "offers": {
+    "@type": "Offer",
+    "availability": "{{ 'https://schema.org/InStock' if product.availability == 'in_stock' else 'https://schema.org/OutOfStock' }}",
+    "itemCondition": "https://schema.org/NewCondition"
+  }
+}
+</script>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/gallery.js"></script>
+<script>
+  function getEffectiveVariant() {
+    const sel = document.getElementById('variantSelect');
+    if (!sel || !sel.value) {
+      return {
+        variantId: null,
+        size: '{{ product.size_info }}',
+        colour: '{{ product.available_colours }}',
+        moq: parseInt('{{ product.moq }}'),
+        suffix: ''
+      };
+    }
+    const opt = sel.options[sel.selectedIndex];
+    return {
+      variantId: parseInt(sel.value),
+      size: opt.getAttribute('data-size'),
+      colour: opt.getAttribute('data-colour'),
+      moq: parseInt(opt.getAttribute('data-moq')) || parseInt('{{ product.moq }}'),
+      suffix: opt.getAttribute('data-suffix')
+    };
+  }
+
+  function onVariantChange() {
+    const variant = getEffectiveVariant();
+    const qtyInput = document.getElementById('productQuantityInput');
+    const moqNotice = document.getElementById('moqNoticeText');
+    const skuDisplay = document.getElementById('currentSkuDisplay');
+
+    if (moqNotice) {
+      moqNotice.textContent = `(Minimum: ${variant.moq} pcs)`;
+    }
+    if (qtyInput && parseInt(qtyInput.value) < variant.moq) {
+      qtyInput.value = variant.moq;
+      qtyInput.min = variant.moq;
+    }
+    if (skuDisplay) {
+      skuDisplay.textContent = '{{ product.sku }}' + (variant.suffix || '');
+    }
+  }
+
+  function adjustProductQty(delta) {
+    const qtyInput = document.getElementById('productQuantityInput');
+    const variant = getEffectiveVariant();
+    let current = parseInt(qtyInput.value) || variant.moq;
+    let next = current + delta;
+    if (next < variant.moq) {
+      next = variant.moq;
+      showToast(`Minimum order quantity is ${variant.moq} pcs.`, 'error');
+    }
+    qtyInput.value = next;
+  }
+
+  function handleAddSelectedProduct() {
+    const variant = getEffectiveVariant();
+    const qtyInput = document.getElementById('productQuantityInput');
+    const qty = parseInt(qtyInput.value) || variant.moq;
+
+    if (qty < variant.moq) {
+      showToast(`Minimum order quantity is ${variant.moq} pieces.`, 'error');
+      return;
+    }
+
+    addToEnquiry(
+      parseInt('{{ product.id }}'),
+      '{{ product.name|replace("\'", "\\\'") }}',
+      '{{ product.sku }}' + (variant.suffix || ''),
+      variant.moq,
+      '{{ product.primary_image_url }}',
+      variant.size,
+      variant.colour,
+      qty
+    );
+  }
+
+  function handleDirectWhatsAppEnquiry() {
+    handleAddSelectedProduct();
+    openEnquiryDrawer();
+  }
+</script>
+{% endblock %}
