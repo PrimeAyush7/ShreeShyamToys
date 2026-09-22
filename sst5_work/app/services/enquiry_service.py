@@ -177,8 +177,14 @@ class EnquiryService:
         setting = db.fetch_one("SELECT value FROM website_settings WHERE key = 'whatsapp_number'")
         raw_number = ((setting["value"] if (setting and setting.get("value")) else "") or settings.WHATSAPP_NUMBER or "").strip()
         clean_number = "".join(filter(str.isdigit, raw_number))
+        # WhatsApp wa.me requires an international number without +, spaces, or 0-prefix.
+        # This site is India-focused, so a 10-digit Indian mobile is normalized to +91.
+        if len(clean_number) == 10:
+            clean_number = "91" + clean_number
+        elif clean_number.startswith("0") and len(clean_number) == 11:
+            clean_number = "91" + clean_number[1:]
 
-        if clean_number and len(clean_number) >= 8:
+        if clean_number and len(clean_number) >= 11:
             encoded_text = urllib.parse.quote(whatsapp_msg)
             whatsapp_url = f"https://wa.me/{clean_number}?text={encoded_text}"
         else:
