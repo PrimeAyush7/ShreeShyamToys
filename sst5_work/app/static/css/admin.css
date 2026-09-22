@@ -198,3 +198,258 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+/* ==========================================================
+   ADMIN LAYOUT FIX — DESKTOP CONTAINMENT + MOBILE DRAWER
+   ========================================================== */
+
+html:has(.admin-layout),
+body:has(.admin-layout) {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.admin-layout {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.admin-sidebar {
+  box-sizing: border-box;
+  flex: 0 0 260px;
+  width: 260px;
+  min-width: 260px;
+  max-width: 260px;
+}
+
+.admin-main {
+  flex: 1 1 auto;
+  width: calc(100% - 260px);
+  max-width: calc(100% - 260px);
+  min-width: 0 !important;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.admin-topbar,
+.admin-body {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.admin-topbar {
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.admin-topbar > * {
+  min-width: 0;
+}
+
+.admin-body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Keep individual cards and data regions inside the main column. */
+.admin-card,
+.metric-card,
+.form-grid-2,
+.form-grid-3 {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.admin-card {
+  overflow-x: auto;
+}
+
+.admin-table {
+  min-width: 560px;
+}
+
+/* Fixed-width controls used by individual admin pages should never push
+   the page itself wider than the main column. */
+.admin-body input,
+.admin-body select,
+.admin-body textarea,
+.admin-body button,
+.admin-body .btn {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Mobile controls */
+.admin-mobile-toggle,
+.admin-sidebar-backdrop {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  html:has(.admin-layout),
+  body:has(.admin-layout) {
+    overflow-x: hidden;
+  }
+
+  .admin-layout {
+    display: block;
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .admin-sidebar {
+    position: fixed;
+    z-index: 1100;
+    inset: 0 auto 0 0;
+    height: 100dvh;
+    width: min(280px, 86vw);
+    min-width: 0;
+    max-width: 86vw;
+    transform: translateX(-105%);
+    transition: transform 0.24s ease;
+    box-shadow: 12px 0 32px rgba(0,0,0,.22);
+  }
+
+  .admin-layout.admin-sidebar-open .admin-sidebar {
+    transform: translateX(0);
+  }
+
+  .admin-sidebar-backdrop {
+    position: fixed;
+    z-index: 1090;
+    inset: 0;
+    display: block;
+    background: rgba(0,0,0,.42);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .2s ease, visibility .2s ease;
+  }
+
+  .admin-layout.admin-sidebar-open .admin-sidebar-backdrop {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .admin-mobile-toggle {
+    position: fixed;
+    z-index: 1110;
+    top: 12px;
+    left: 12px;
+    width: 44px;
+    height: 44px;
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+    background: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 8px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.12);
+    cursor: pointer;
+  }
+
+  .admin-mobile-toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 999px;
+    background: #24140D;
+  }
+
+  .admin-main {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .admin-topbar {
+    min-height: 70px;
+    padding: 14px 16px 14px 68px;
+  }
+
+  .admin-topbar > div:first-child {
+    min-width: 0;
+    flex: 1 1 220px;
+  }
+
+  .admin-topbar > div:last-child {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  .admin-body {
+    padding: 20px 16px;
+    overflow-x: hidden;
+  }
+
+  .admin-body > div,
+  .admin-body > section,
+  .admin-body > form {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-table {
+    min-width: 640px;
+  }
+}
+
+@media (max-width: 520px) {
+  .admin-body {
+    padding: 16px 12px;
+  }
+
+  .admin-topbar {
+    padding-right: 12px;
+  }
+
+  .admin-topbar > div:first-child {
+    flex-basis: 100%;
+  }
+
+  .admin-topbar > div:last-child {
+    width: 100%;
+  }
+
+  .admin-topbar > div:last-child .btn {
+    width: 100%;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-card {
+    padding: 16px;
+  }
+}
+
+/* Any page-level two-column admin grid should collapse before it can overflow. */
+@media (max-width: 900px) {
+  .admin-body [style*="grid-template-columns: 1fr 2fr"],
+  .admin-body [style*="grid-template-columns:1fr 2fr"],
+  .admin-body [style*="grid-template-columns: 2fr 1fr"],
+  .admin-body [style*="grid-template-columns:1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+}
