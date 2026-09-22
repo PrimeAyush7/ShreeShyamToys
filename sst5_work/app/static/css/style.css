@@ -896,3 +896,17 @@ input {
   box-sizing: border-box;
   max-width: 100%;
 }
+
+
+/* Global overflow safety */
+main,
+section,
+header,
+footer,
+.container {
+  min-width: 0;
+}
+
+main * {
+  max-width: 100%;
+}
