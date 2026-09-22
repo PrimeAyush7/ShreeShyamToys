@@ -65,7 +65,7 @@
       <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 14px;">Customer Information</h4>
       <div style="font-size: 13.5px; line-height: 1.8;">
         <div><strong>Name:</strong> {{ enquiry.customer_name }}</div>
-        <div><strong>Mobile:</strong> <a href="https://wa.me/{{ enquiry.customer_mobile|replace('+', '')|replace(' ', '') }}" target="_blank" style="color: #059669; font-weight: 700;">{{ enquiry.customer_mobile }} &rarr;</a></div>
+        <div><strong>Mobile:</strong> <a href="https://wa.me/{% set enq_wa = (enquiry.customer_mobile or '')|replace('+','')|replace(' ','')|replace('-','') %}{% if enq_wa|length == 10 %}91{% endif %}{{ enq_wa }}" target="_blank" style="color: #059669; font-weight: 700;">{{ enquiry.customer_mobile }} &rarr;</a></div>
         <div><strong>Email:</strong> {{ enquiry.customer_email }}</div>
         <div><strong>Customer ID:</strong> <span style="font-family: monospace;">{{ enquiry.customer_id }}</span></div>
       </div>
