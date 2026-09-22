@@ -552,3 +552,156 @@ html, body {
     grid-template-columns: 1fr !important;
   }
 }
+
+
+/* ==========================================================
+   CUSTOMER MOBILE UX FIXES
+   ========================================================== */
+
+.customer-profile-page,
+.customer-profile-page * {
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.customer-profile-card {
+  background: linear-gradient(145deg, #FFFFFF 0%, #FFF8F2 100%) !important;
+  border-color: #EAD8C8 !important;
+}
+
+.customer-profile-card .form-label {
+  color: #6F3512;
+}
+
+.customer-profile-card .form-control {
+  width: 100%;
+  max-width: 100%;
+  background: #FFFCF9;
+}
+
+.customer-profile-card .form-control:focus {
+  border-color: #D27D2D;
+  box-shadow: 0 0 0 3px rgba(210,125,45,.14);
+}
+
+.customer-profile-card .form-group {
+  width: 100%;
+}
+
+@media (max-width: 700px) {
+  .customer-profile-page {
+    padding-top: 28px !important;
+    padding-bottom: 44px !important;
+  }
+
+  .customer-profile-header {
+    align-items: stretch !important;
+    flex-direction: column !important;
+    gap: 16px;
+  }
+
+  .customer-profile-header > div:first-child {
+    width: 100%;
+  }
+
+  .customer-profile-header h1 {
+    font-size: 26px !important;
+    line-height: 1.15;
+  }
+
+  .customer-profile-header > div:last-child {
+    width: 100%;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px !important;
+  }
+
+  .customer-profile-header > div:last-child .btn {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .customer-profile-card {
+    padding: 20px !important;
+    border-radius: 20px !important;
+  }
+
+  .customer-profile-actions {
+    flex-direction: column !important;
+  }
+
+  .customer-profile-actions .btn {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 420px) {
+  .customer-profile-page {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .customer-profile-header > div:last-child {
+    grid-template-columns: 1fr;
+  }
+
+  .customer-profile-card {
+    padding: 16px !important;
+  }
+
+  .customer-profile-card .form-label {
+    font-size: 12.5px;
+  }
+}
+
+/* Header actions must never force the public site wider than the phone. */
+@media (max-width: 700px) {
+  .site-header .header-inner {
+    height: auto;
+    min-height: 64px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+
+  .site-header .logo-container {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .site-header .header-actions {
+    width: 100%;
+    min-width: 0;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .site-header .header-actions .btn,
+  .site-header .header-actions .enquiry-badge-btn {
+    max-width: 100%;
+  }
+
+  .site-header .header-actions > * {
+    min-width: 0;
+  }
+
+  .site-header .header-actions > a,
+  .site-header .header-actions > button {
+    flex: 1 1 150px;
+  }
+}
+
+@media (max-width: 420px) {
+  .site-header .header-actions {
+    justify-content: stretch;
+  }
+
+  .site-header .header-actions > a,
+  .site-header .header-actions > button {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+}
