@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>{% block title %}{{ settings.website_title or "Shree Shyam Toys — Wholesale Plush & Soft Toys" }}{% endblock %}</title>
+  <title>{% block title %}
+{% set wa_number_normalized = (settings.whatsapp_number or '')|replace('+','')|replace(' ','')|replace('-','') %}
+{{ settings.website_title or "Shree Shyam Toys — Wholesale Plush & Soft Toys" }}{% endblock %}</title>
   <meta name="description" content="{% block meta_description %}{{ settings.meta_description or "Explore our collection of soft toys and teddy bears. Connect with us for product information and bulk enquiries." }}{% endblock %}">
   <link rel="canonical" href="{% block canonical_url %}{{ settings.app_url.rstrip("/") }}{{ request.url.path }}{% endblock %}">
 
@@ -241,7 +243,7 @@
           <li><a href="/#faq">Frequently Asked Questions</a></li>
           <li><a href="/customer/enquiries">Track Enquiries</a></li>
           <li><a href="/customer/profile">Customer Dashboard</a></li>
-          {% if settings.whatsapp_number %}<li><a href="https://wa.me/{{ settings.whatsapp_number }}" target="_blank">Direct WhatsApp Desk</a></li>{% endif %}
+          {% if settings.whatsapp_number %}<li><a href="https://wa.me/{% if wa_number_normalized|length == 10 %}91{% endif %}{{ wa_number_normalized }}" target="_blank">Direct WhatsApp Desk</a></li>{% endif %}
         </ul>
       </div>
 
