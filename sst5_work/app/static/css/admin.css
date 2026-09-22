@@ -453,3 +453,147 @@ body:has(.admin-layout) {
     grid-template-columns: 1fr !important;
   }
 }
+
+
+/* ==========================================================
+   FINAL ADMIN LAYOUT FIX
+   - Sidebar brand text is stacked.
+   - Main column cannot add width beyond the viewport.
+   - Recent dashboard sections are intentionally one below another.
+   ========================================================== */
+
+.admin-layout {
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow-x: clip;
+}
+
+.admin-sidebar {
+  flex: 0 0 260px;
+  width: 260px;
+  min-width: 260px;
+  max-width: 260px;
+  box-sizing: border-box;
+}
+
+.admin-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 7px;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.admin-brand-logo {
+  width: auto;
+  height: 36px;
+  max-width: 100%;
+  filter: brightness(0) invert(1);
+}
+
+.admin-brand-copy {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.admin-brand-name,
+.admin-brand-admin,
+.admin-brand-portal {
+  display: block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.admin-brand-name {
+  color: #FFFFFF;
+  font-size: 13px;
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: .35px;
+}
+
+.admin-brand-admin {
+  margin-top: 5px;
+  color: #FFFFFF;
+  font-size: 15px;
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: .6px;
+}
+
+.admin-brand-portal {
+  margin-top: 2px;
+  color: #D27D2D;
+  font-size: 10px;
+  line-height: 1.3;
+  font-weight: 800;
+  letter-spacing: .45px;
+}
+
+.admin-main {
+  flex: 1 1 0;
+  width: auto;
+  max-width: none;
+  min-width: 0 !important;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.admin-body {
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.dashboard-recent-sections {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.dashboard-recent-sections > .admin-card {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+  .admin-layout {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  .admin-sidebar {
+    width: min(260px, 86vw);
+    min-width: 0;
+    max-width: 86vw;
+  }
+
+  .admin-main {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+  }
+
+  .dashboard-recent-sections {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
