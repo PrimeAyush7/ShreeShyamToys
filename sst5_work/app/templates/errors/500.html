@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
-{% block title %}System Notice — Shree Shyam Toys{% endblock %}
+{% block title %}
+{% set wa_number_normalized = (settings.whatsapp_number or '')|replace('+','')|replace(' ','')|replace('-','') %}
+System Notice — Shree Shyam Toys{% endblock %}
 
 {% block content %}
 <div class="container" style="padding: 96px 20px; text-align: center; max-width: 600px;">
@@ -11,7 +13,7 @@
   </p>
   <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
     {% if settings.whatsapp_number %}
-    <a href="https://wa.me/{{ settings.whatsapp_number }}" target="_blank" class="btn btn-whatsapp btn-lg">
+    <a href="https://wa.me/{% if wa_number_normalized|length == 10 %}91{% endif %}{{ wa_number_normalized }}" target="_blank" class="btn btn-whatsapp btn-lg">
       Connect on WhatsApp &rarr;
     </a>
     {% else %}
