@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <rect width="400" height="400" fill="#FAF5F0" rx="16"/>
+  <circle cx="200" cy="180" r="70" fill="#EED9C4" />
+  <circle cx="165" cy="130" r="25" fill="#DDB892" />
+  <circle cx="235" cy="130" r="25" fill="#DDB892" />
+  <ellipse cx="200" cy="195" rx="35" ry="25" fill="#FFF9F4" />
+  <circle cx="180" cy="170" r="7" fill="#583110" />
+  <circle cx="220" cy="170" r="7" fill="#583110" />
+  <polygon points="200,190 192,180 208,180" fill="#7F4F24" />
+  <text x="200" y="310" font-family="sans-serif" font-size="16" font-weight="700" fill="#936639" text-anchor="middle">Shree Shyam Toys</text>
+  <text x="200" y="335" font-family="sans-serif" font-size="12" fill="#A68A68" text-anchor="middle">Wholesale Plush Catalogue</text>
+</svg>

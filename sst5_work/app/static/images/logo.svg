@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 80" width="420" height="80">
+  <defs>
+    <linearGradient id="warmGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8B4513" />
+      <stop offset="100%" stop-color="#D27D2D" />
+    </linearGradient>
+    <filter id="softShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+  <!-- Cute Teddy Icon -->
+  <g transform="translate(15, 12)" filter="url(#softShadow)">
+    <!-- Left Ear -->
+    <circle cx="14" cy="14" r="10" fill="#8B4513" />
+    <circle cx="14" cy="14" r="5.5" fill="#FFD1DC" />
+    <!-- Right Ear -->
+    <circle cx="42" cy="14" r="10" fill="#8B4513" />
+    <circle cx="42" cy="14" r="5.5" fill="#FFD1DC" />
+    <!-- Head -->
+    <circle cx="28" cy="30" r="22" fill="url(#warmGrad)" />
+    <!-- Muzzle -->
+    <ellipse cx="28" cy="34" rx="11" ry="8.5" fill="#FFF5EE" />
+    <!-- Eyes -->
+    <circle cx="20" cy="26" r="2.8" fill="#2B1B17" />
+    <circle cx="21" cy="25" r="0.9" fill="#FFFFFF" />
+    <circle cx="36" cy="26" r="2.8" fill="#2B1B17" />
+    <circle cx="37" cy="25" r="0.9" fill="#FFFFFF" />
+    <!-- Cute Nose & Smile -->
+    <polygon points="28,32 25,29 31,29" fill="#5C2C16" />
+    <path d="M26,35 Q28,37 30,35" stroke="#5C2C16" stroke-width="1.5" fill="none" stroke-linecap="round" />
+    <!-- Bow tie -->
+    <polygon points="28,51 22,46 22,56" fill="#E56B6F" />
+    <polygon points="28,51 34,46 34,56" fill="#E56B6F" />
+    <circle cx="28" cy="51" r="2.5" fill="#B56576" />
+  </g>
+  <!-- Text Brand -->
+  <text x="80" y="37" font-family="'Plus Jakarta Sans', 'Segoe UI', sans-serif" font-size="24" font-weight="800" fill="#3D2314" letter-spacing="-0.5">SHREE SHYAM</text>
+  <text x="250" y="37" font-family="'Plus Jakarta Sans', 'Segoe UI', sans-serif" font-size="24" font-weight="800" fill="#C86D36" letter-spacing="-0.5">TOYS</text>
+  <text x="82" y="55" font-family="'Plus Jakarta Sans', 'Segoe UI', sans-serif" font-size="11" font-weight="600" fill="#8B7355" letter-spacing="1.8">WHOLESALE SOFT TOYS &amp; PLUSH</text>
+</svg>

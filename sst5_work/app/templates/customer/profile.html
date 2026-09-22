@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}My Wholesale Profile — Shree Shyam Toys{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 40px; padding-bottom: 64px; max-width: 800px;">
+  
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px;">
+    <div>
+      <h1 style="font-size: 28px; font-weight: 800; color: #24140D;">Wholesale Buyer Profile</h1>
+      <p style="font-size: 14px; color: var(--text-muted);">Manage your contact details and active enquiry preferences.</p>
+    </div>
+    <div style="display: flex; gap: 10px;">
+      <a href="/customer/enquiries" class="btn btn-outline btn-sm">My Enquiries &rarr;</a>
+      <a href="/auth/logout" class="btn btn-outline btn-sm" style="color: #DC2626;">Logout</a>
+    </div>
+  </div>
+
+  {% if success %}
+  <div style="background: #D1FAE5; border: 1px solid #6EE7B7; color: #065F46; border-radius: var(--radius-md); padding: 14px; font-size: 14px; font-weight: 600; margin-bottom: 24px;">
+    {{ success }}
+  </div>
+  {% endif %}
+
+  <div style="background: #FFFFFF; border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 32px; box-shadow: var(--shadow-sm);">
+    <form action="/customer/profile" method="POST">
+      <div class="form-group">
+        <label class="form-label">Full Name / Business Title</label>
+        <input type="text" name="name" class="form-control" value="{{ customer.name or user.name }}" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Verified Google Email</label>
+        <input type="email" class="form-control" value="{{ customer.email or user.email }}" disabled style="background-color: var(--bg-page); color: var(--text-muted);">
+        <small style="font-size: 12px; color: var(--text-light); margin-top: 4px; display: block;">Verified via Google OAuth.</small>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          WhatsApp Business / Mobile Number <span style="color: #DC2626;">* (Mandatory for Enquiries)</span>
+        </label>
+        <input type="tel" name="mobile" class="form-control" value="{{ customer.mobile or user.mobile or '' }}" placeholder="Enter 10-digit mobile number" required>
+        <small style="font-size: 12px; color: var(--text-muted); margin-top: 4px; display: block;">
+          Our sales desk dispatches official wholesale quotations directly to this WhatsApp contact.
+        </small>
+      </div>
+
+      <div style="margin-top: 28px; display: flex; gap: 12px;">
+        <button type="submit" class="btn btn-primary">Save Profile Changes</button>
+        <a href="/catalogue" class="btn btn-outline">Browse Catalogue</a>
+      </div>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

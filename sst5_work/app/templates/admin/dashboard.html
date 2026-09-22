@@ -1,0 +1,118 @@
+{% extends "admin/base_admin.html" %}
+
+{% block page_title %}Operational Overview{% endblock %}
+
+{% block admin_content %}
+{% if not settings.whatsapp_number %}
+<div style="background: #FFFBEB; border: 1px solid #FCD34D; color: #92400E; padding: 14px 20px; border-radius: 8px; margin-bottom: 24px; font-size: 13.5px; display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+  <div>
+    <strong>WhatsApp Business Number Not Configured:</strong> Public WhatsApp chat buttons and direct enquiry links are currently disabled until a valid WhatsApp Business number is provided in Website Settings.
+  </div>
+  <a href="/admin/settings" class="btn btn-sm btn-primary" style="white-space: nowrap;">Configure WhatsApp</a>
+</div>
+{% endif %}
+
+<!-- Metrics Grid -->
+<div class="metrics-grid">
+  <div class="metric-card">
+    <div class="metric-label">Total Products</div>
+    <div class="metric-value">{{ metrics.total_products }}</div>
+    <div style="font-size: 12px; color: #059669; font-weight: 600; margin-top: 4px;">{{ metrics.active_products }} In Stock</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-label">Total Enquiries</div>
+    <div class="metric-value">{{ metrics.total_enquiries }}</div>
+    <div style="font-size: 12px; color: #D97706; font-weight: 600; margin-top: 4px;">{{ metrics.new_enquiries }} New &bull; {{ metrics.pending_enquiries }} Pending</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-label">Wholesale Customers</div>
+    <div class="metric-value">{{ metrics.customers_count }}</div>
+    <div style="font-size: 12px; color: #6B7280; margin-top: 4px;">Active Verified Buyers</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-label">Product Categories</div>
+    <div class="metric-value">{{ metrics.categories_count }}</div>
+    <div style="font-size: 12px; color: #6B7280; margin-top: 4px;">Catalogue Collections</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-label">Database Persistence</div>
+    <div class="metric-value" style="font-size: 18px; color: #059669; margin-top: 8px;">{{ metrics.db_status }}</div>
+    <div style="font-size: 11px; color: #6B7280; margin-top: 4px;">Safe across redeploys</div>
+  </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px;">
+  <!-- Recent Enquiries -->
+  <div class="admin-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <h3 style="font-size: 16px; font-weight: 800; color: #111827;">Recent Wholesale Enquiries</h3>
+      <a href="/admin/enquiries" style="font-size: 13px; font-weight: 600; color: var(--primary);">View All &rarr;</a>
+    </div>
+
+    {% if metrics.recent_enquiries %}
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Reference</th>
+          <th>Customer</th>
+          <th>Mobile</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for enq in metrics.recent_enquiries %}
+        <tr>
+          <td style="font-family: monospace; font-weight: 700;">{{ enq.enquiry_reference }}</td>
+          <td>{{ enq.customer_name }}</td>
+          <td>{{ enq.customer_mobile }}</td>
+          <td><span class="status-pill status-{{ enq.status }}">{{ enq.status|replace('_', ' ') }}</span></td>
+          <td>
+            <a href="/admin/enquiries/{{ enq.id }}" class="btn btn-outline btn-sm">Details</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p style="font-size: 13px; color: #6B7280; text-align: center; padding: 24px;">No enquiries recorded yet.</p>
+    {% endif %}
+  </div>
+
+  <!-- Recent Customers -->
+  <div class="admin-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <h3 style="font-size: 16px; font-weight: 800; color: #111827;">Recent Buyer Accounts</h3>
+      <a href="/admin/customers" style="font-size: 13px; font-weight: 600; color: var(--primary);">View All &rarr;</a>
+    </div>
+
+    {% if metrics.recent_customers %}
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Buyer Name</th>
+          <th>Mobile</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in metrics.recent_customers %}
+        <tr>
+          <td>
+            <div style="font-weight: 700;">{{ c.name }}</div>
+            <div style="font-size: 11px; color: #6B7280;">{{ c.email }}</div>
+          </td>
+          <td>{{ c.mobile or 'Not provided' }}</td>
+          <td>
+            <span class="status-pill {% if c.status == 'active' %}status-confirmed{% else %}status-cancelled{% endif %}">{{ c.status }}</span>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p style="font-size: 13px; color: #6B7280; text-align: center; padding: 24px;">No customer accounts yet.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
