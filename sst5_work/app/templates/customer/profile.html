@@ -3,9 +3,9 @@
 {% block title %}My Wholesale Profile — Shree Shyam Toys{% endblock %}
 
 {% block content %}
-<div class="container" style="padding-top: 40px; padding-bottom: 64px; max-width: 800px;">
+<div class="container customer-profile-page" style="padding-top: 40px; padding-bottom: 64px; max-width: 800px;">
   
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px;">
+  <div class="customer-profile-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px;">
     <div>
       <h1 style="font-size: 28px; font-weight: 800; color: #24140D;">Wholesale Buyer Profile</h1>
       <p style="font-size: 14px; color: var(--text-muted);">Manage your contact details and active enquiry preferences.</p>
@@ -22,7 +22,7 @@
   </div>
   {% endif %}
 
-  <div style="background: #FFFFFF; border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 32px; box-shadow: var(--shadow-sm);">
+  <div class="customer-profile-card" style="background: #FFFFFF; border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 32px; box-shadow: var(--shadow-sm);">
     <form action="/customer/profile" method="POST">
       <div class="form-group">
         <label class="form-label">Full Name / Business Title</label>
@@ -45,7 +45,7 @@
         </small>
       </div>
 
-      <div style="margin-top: 28px; display: flex; gap: 12px;">
+      <div class="customer-profile-actions" style="margin-top: 28px; display: flex; gap: 12px;">
         <button type="submit" class="btn btn-primary">Save Profile Changes</button>
         <a href="/catalogue" class="btn btn-outline">Browse Catalogue</a>
       </div>
