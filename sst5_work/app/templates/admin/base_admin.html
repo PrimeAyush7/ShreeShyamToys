@@ -15,8 +15,13 @@
 <body>
 
 <div class="admin-layout">
+  <button class="admin-mobile-menu" id="adminMobileMenu" type="button"
+          aria-label="Open admin navigation" aria-controls="adminSidebar" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="admin-sidebar-backdrop" id="adminSidebarBackdrop" aria-hidden="true"></div>
   <!-- Sidebar -->
-  <aside class="admin-sidebar">
+  <aside class="admin-sidebar" id="adminSidebar">
     <div class="admin-brand">
       <img src="/static/images/logo.svg" alt="Logo" style="height: 36px; filter: brightness(0) invert(1);">
       <div>
