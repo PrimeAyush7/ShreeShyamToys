@@ -3,49 +3,46 @@
 // ==========================================================
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Responsive Admin Sidebar
-  const adminLayout = document.querySelector('.admin-layout');
-  const adminMobileMenu = document.getElementById('adminMobileMenu');
-  const adminSidebar = document.getElementById('adminSidebar');
-  const adminSidebarBackdrop = document.getElementById('adminSidebarBackdrop');
 
-  if (adminLayout && adminMobileMenu && adminSidebar) {
-    const setAdminSidebar = (open) => {
+  // Admin mobile sidebar
+  const adminLayout = document.getElementById('adminLayout');
+  const adminMobileToggle = document.getElementById('adminMobileToggle');
+  const adminSidebarBackdrop = document.getElementById('adminSidebarBackdrop');
+  const adminSidebar = document.getElementById('adminSidebar');
+
+  if (adminLayout && adminMobileToggle && adminSidebar) {
+    const setAdminMenu = (open) => {
       adminLayout.classList.toggle('admin-sidebar-open', open);
-      adminMobileMenu.setAttribute('aria-expanded', open ? 'true' : 'false');
+      adminMobileToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
       if (adminSidebarBackdrop) {
         adminSidebarBackdrop.setAttribute('aria-hidden', open ? 'false' : 'true');
       }
-      if (window.matchMedia('(max-width: 900px)').matches) {
-        document.body.style.overflow = open ? 'hidden' : '';
-      }
+      document.body.style.overflow = open ? 'hidden' : '';
     };
 
-    adminMobileMenu.addEventListener('click', () => {
-      setAdminSidebar(!adminLayout.classList.contains('admin-sidebar-open'));
+    adminMobileToggle.addEventListener('click', () => {
+      setAdminMenu(!adminLayout.classList.contains('admin-sidebar-open'));
     });
 
-    if (adminSidebarBackdrop) {
-      adminSidebarBackdrop.addEventListener('click', () => setAdminSidebar(false));
-    }
+    adminSidebarBackdrop?.addEventListener('click', () => setAdminMenu(false));
 
     adminSidebar.querySelectorAll('a').forEach((link) => {
       link.addEventListener('click', () => {
         if (window.matchMedia('(max-width: 900px)').matches) {
-          setAdminSidebar(false);
+          setAdminMenu(false);
         }
       });
     });
 
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && adminLayout.classList.contains('admin-sidebar-open')) {
-        setAdminSidebar(false);
+        setAdminMenu(false);
       }
     });
 
     window.addEventListener('resize', () => {
       if (!window.matchMedia('(max-width: 900px)').matches) {
-        setAdminSidebar(false);
+        setAdminMenu(false);
       }
     });
   }
