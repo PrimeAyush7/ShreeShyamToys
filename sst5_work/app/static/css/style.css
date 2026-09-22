@@ -874,3 +874,25 @@ button, input, select, textarea {
     cursor: default;
   }
 }
+
+
+/* Global sizing safety */
+.container,
+.header-inner,
+main,
+.site-footer {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.header-inner {
+  min-width: 0;
+}
+
+.form-control,
+textarea,
+select,
+input {
+  box-sizing: border-box;
+  max-width: 100%;
+}
