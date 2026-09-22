@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% set wa_number_normalized = (settings.whatsapp_number or '')|replace('+','')|replace(' ','')|replace('-','') %}
+
 <!-- Hero Section -->
 {% set hero = sections.get('hero', {}) %}
 <section class="hero-section">
@@ -14,7 +16,7 @@
           {{ hero.cta_label or "Explore Wholesale Catalogue" }} &rarr;
         </a>
         {% if settings.whatsapp_number %}
-        <a href="https://wa.me/{{ settings.whatsapp_number }}" target="_blank" class="btn btn-whatsapp btn-lg">
+        <a href="https://wa.me/{% if wa_number_normalized|length == 10 %}91{% endif %}{{ wa_number_normalized }}" target="_blank" class="btn btn-whatsapp btn-lg">
           Connect on WhatsApp
         </a>
         {% else %}
@@ -249,7 +251,7 @@
     </p>
     <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
       {% if settings.whatsapp_number %}
-      <a href="https://wa.me/{{ settings.whatsapp_number }}" target="_blank" class="btn btn-whatsapp btn-lg">
+      <a href="https://wa.me/{% if wa_number_normalized|length == 10 %}91{% endif %}{{ wa_number_normalized }}" target="_blank" class="btn btn-whatsapp btn-lg">
         Speak With Sales on WhatsApp &rarr;
       </a>
       {% else %}
