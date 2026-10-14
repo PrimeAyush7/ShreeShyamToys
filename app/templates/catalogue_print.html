@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ settings.business_name or 'Shree Shyam Toys' }} — Visual Wholesale Lookbook &amp; Printable Catalogue</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #FBF9F6;
+      color: #2A1B14;
+      padding: 24px;
+    }
+    .print-toolbar {
+      max-width: 1100px;
+      margin: 0 auto 24px;
+      background: #24140D;
+      color: #FFFFFF;
+      padding: 16px 24px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .toolbar-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 13.5px;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-gold { background: #D27D2D; color: #FFFFFF; }
+    .btn-green { background: #25D366; color: #FFFFFF; }
+    .btn-ghost { background: rgba(255,255,255,0.12); color: #FFFFFF; }
+    .sheet {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      border: 1px solid #EFE7E0;
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.05);
+    }
+    .lookbook-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #8B4513;
+      padding-bottom: 20px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .lookbook-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+      gap: 18px;
+    }
+    .lookbook-card {
+      border: 1px solid #E6DCD3;
+      border-radius: 14px;
+      overflow: hidden;
+      page-break-inside: avoid;
+      background: #FFFFFF;
+    }
+    .lookbook-card img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      background: #F5EFEB;
+    }
+    .lookbook-card-body {
+      padding: 12px 14px;
+    }
+    .sku-pill {
+      display: inline-block;
+      font-family: monospace;
+      font-size: 11px;
+      font-weight: 700;
+      background: #F7EDE2;
+      color: #8B4513;
+      padding: 2px 8px;
+      border-radius: 99px;
+      margin-bottom: 6px;
+    }
+    .tier-box {
+      margin-top: 8px;
+      background: #FBF9F6;
+      border: 1px solid #EFE7E0;
+      border-radius: 8px;
+      padding: 6px 8px;
+      font-size: 11.5px;
+      display: flex;
+      justify-content: space-between;
+    }
+    @media print {
+      body { background: #FFFFFF; padding: 0; }
+      .print-toolbar { display: none !important; }
+      .sheet { border: none; box-shadow: none; padding: 12px; max-width: 100%; }
+      .lookbook-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="print-toolbar">
+    <div>
+      <strong style="font-size: 16px;">&#128214; {{ settings.business_name or 'Shree Shyam Toys' }} — B2B Wholesale Lookbook</strong>
+      <div style="font-size: 12.5px; color: #D6C7BC;">Print this visual lookbook with photos or download the direct PDF price/specification sheet.</div>
+    </div>
+    <div class="toolbar-actions">
+      <a href="/catalogue/pdf" class="btn btn-gold">&#128229; Download Direct PDF File</a>
+      <button onclick="window.print()" class="btn btn-green">&#128424; Print / Save Colour Lookbook</button>
+      <a href="/catalogue" class="btn btn-ghost">&larr; Back to Interactive Catalogue</a>
+    </div>
+  </div>
+
+  <div class="sheet">
+    <div class="lookbook-header">
+      <div>
+        <div style="font-size: 12px; font-weight: 800; color: #D27D2D; text-transform: uppercase; letter-spacing: 1px;">Official Wholesale B2B Catalogue</div>
+        <h1 style="font-size: 28px; font-weight: 800; color: #24140D; margin-top: 4px;">{{ settings.business_name or 'Shree Shyam Toys' }}</h1>
+        <p style="font-size: 13px; color: #6B5B52; margin-top: 4px;">{{ settings.address or 'Delhi, India' }} &bull; Hours: {{ settings.business_hours or 'Mon-Sat: 9:30 AM - 7:00 PM' }}</p>
+      </div>
+      <div style="text-align: right; font-size: 13px; line-height: 1.6;">
+        {% if settings.whatsapp_number %}<div><strong>WhatsApp Wholesale Desk:</strong> +{{ settings.whatsapp_number }}</div>{% endif %}
+        {% if settings.phone %}<div><strong>Phone:</strong> {{ settings.phone }}</div>{% endif %}
+        <div><strong>Email:</strong> {{ settings.email or 'contact@shreeshyamtoys.com' }}</div>
+        <div><strong>Total Active Designs:</strong> {{ products|length }} Models</div>
+      </div>
+    </div>
+
+    <div class="lookbook-grid">
+      {% for p in products %}
+      <div class="lookbook-card">
+        <img src="{{ p.primary_image_url or '/static/images/placeholder.svg' }}" alt="{{ p.name }}">
+        <div class="lookbook-card-body">
+          <span class="sku-pill">SKU: {{ p.sku }}</span>
+          <h3 style="font-size: 14.5px; font-weight: 800; color: #24140D; margin-bottom: 4px;">{{ p.name }}</h3>
+          <div style="font-size: 11.5px; color: #6B5B52; margin-bottom: 4px;"><strong>Category:</strong> {{ p.category_name }}</div>
+          <div style="font-size: 11.5px; color: #6B5B52; margin-bottom: 4px;"><strong>Sizes:</strong> {{ p.size_info or 'Standard' }}</div>
+          <div style="font-size: 11.5px; color: #6B5B52;"><strong>Colours:</strong> {{ p.available_colours or 'Assorted' }}</div>
+          <div class="tier-box">
+            <span>MOQ: <strong style="color: #8B4513;">{{ p.moq }} pcs</strong></span>
+            <span>Carton: <strong style="color: #059669;">{{ p.effective_carton_qty }} pcs</strong></span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}My Enquiries — Shree Shyam Toys{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 40px; padding-bottom: 64px;">
+
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px;">
+    <div>
+      <h1 style="font-size: 28px; font-weight: 800; color: #24140D;">My Wholesale Enquiries</h1>
+      <p style="font-size: 14px; color: var(--text-muted);">Historical records of all bulk quotations and product requests submitted by you.</p>
+    </div>
+    <div style="display: flex; gap: 10px;">
+      <a href="/customer/profile" class="btn btn-outline btn-sm">My Profile</a>
+      <a href="/catalogue" class="btn btn-primary btn-sm">+ New Enquiry</a>
+    </div>
+  </div>
+
+  {% if enquiries %}
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      {% for enq in enquiries %}
+      <div style="background: #FFFFFF; border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 24px; box-shadow: var(--shadow-sm);">
+        <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; border-bottom: 1px solid var(--border-light); padding-bottom: 16px;">
+          <div>
+            <div style="font-family: monospace; font-size: 16px; font-weight: 800; color: var(--primary);">
+              {{ enq.enquiry_reference }}
+            </div>
+            <div style="font-size: 12.5px; color: var(--text-light); margin-top: 2px;">
+              Submitted on {{ enq.created_at|format_date }} &bull; Contact: {{ enq.customer_mobile }}
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span class="status-pill status-{{ enq.status }}">{{ enq.status|replace('_', ' ') }}</span>
+            {% if enq.whatsapp_message %}
+            {% if settings.whatsapp_number %}
+            <a href="https://wa.me/{{ settings.whatsapp_number }}?text={{ enq.whatsapp_message|urlencode }}" target="_blank" class="btn btn-whatsapp btn-sm">
+              Re-open WhatsApp
+            </a>
+            {% endif %}
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Items Table -->
+        <table style="width: 100%; border-collapse: collapse; font-size: 13.5px;">
+          <thead>
+            <tr style="border-bottom: 1px solid var(--border-light); text-align: left; color: var(--text-muted);">
+              <th style="padding: 8px 0; font-weight: 700;">Product</th>
+              <th style="padding: 8px 0; font-weight: 700;">SKU</th>
+              <th style="padding: 8px 0; font-weight: 700;">Selected Variant</th>
+              <th style="padding: 8px 0; font-weight: 700; text-align: right;">Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for itm in enq.enquiry_items %}
+            <tr style="border-bottom: 1px solid #F8F9FA;">
+              <td style="padding: 10px 0; font-weight: 700; color: var(--text-main);">{{ itm.product_name }}</td>
+              <td style="padding: 10px 0; font-family: monospace; color: var(--text-muted);">{{ itm.sku }}</td>
+              <td style="padding: 10px 0; color: var(--text-muted);">
+                {% if itm.selected_size %}{{ itm.selected_size }}{% endif %}
+                {% if itm.selected_colour %} / {{ itm.selected_colour }}{% endif %}
+              </td>
+              <td style="padding: 10px 0; text-align: right; font-weight: 800; color: var(--primary);">
+                {{ itm.quantity }} pcs
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        {% if enq.notes %}
+        <div style="margin-top: 12px; background: var(--bg-page); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 12.5px; color: var(--text-muted);">
+          <strong>Your Notes:</strong> {{ enq.notes }}
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div style="background: #FFFFFF; border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 64px 20px; text-align: center; color: var(--text-muted);">
+      <div style="font-size: 44px; margin-bottom: 12px;">&#128221;</div>
+      <h3 style="font-size: 20px; font-weight: 800; color: var(--text-main); margin-bottom: 8px;">No Enquiries Submitted Yet</h3>
+      <p style="font-size: 14px; max-width: 440px; margin: 0 auto 20px;">Browse our wholesale plush catalogue, add required models and quantities, and submit your enquiry.</p>
+      <a href="/catalogue" class="btn btn-primary btn-sm">Explore Products Catalogue</a>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}
