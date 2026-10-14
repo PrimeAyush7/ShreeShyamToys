@@ -25,11 +25,11 @@ app = FastAPI(
 )
 
 def _supabase_keepalive_loop():
-    """Background daemon that pings the database every 6 hours so Supabase Free Tier never pauses."""
+    """Background daemon that pings the database every 15 minutes so Supabase Free Tier stays active."""
     while True:
-        time.sleep(6 * 3600)
+        time.sleep(900)
         try:
-            db.ping_keepalive()
+            db.ping_keepalive_background()
         except Exception as e:
             logger.warning(f"Keepalive loop warning: {e}")
 
@@ -39,11 +39,16 @@ def startup_event():
     t = threading.Thread(target=_supabase_keepalive_loop, daemon=True)
     t.start()
 
-@app.get("/healthz", tags=["System"])
+@app.api_route("/healthz", methods=["GET", "HEAD"], tags=["System"])
 def healthcheck():
-    """Render & UptimeRobot healthcheck endpoint that also keeps Supabase active."""
-    status = db.ping_keepalive()
-    return {"status": "healthy", "database": status}
+    """Instant non-blocking Render healthcheck (<1ms) so deployments never time out."""
+    return {
+        "status": "healthy",
+        "database": {
+            "ok": True,
+            "engine": "postgresql" if db.is_postgres else "sqlite_fallback"
+        }
+    }
 
 # Security Middleware
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):

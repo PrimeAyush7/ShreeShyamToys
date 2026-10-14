@@ -25,8 +25,10 @@ def serve_database_media(media_id: str):
         }
     )
 
-@router.get("/")
+@router.api_route("/", methods=["GET", "HEAD"])
 def home(request: Request):
+    if request.method == "HEAD":
+        return FastAPIResponse(status_code=200)
     from app.main import templates
     user = get_current_user(request)
     settings = CMSService.get_settings()
